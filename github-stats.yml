@@ -1,0 +1,11 @@
+provider:
+  name: faas
+  gateway: http://localhost:8080
+
+functions:
+  github-stats:
+    lang: node
+    handler: ./github-stats
+    image: kenfdev/github-stats
+    environment_file:
+      - env.yml
