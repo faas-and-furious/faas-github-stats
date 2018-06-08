@@ -1,5 +1,3 @@
-Set your Github Personal Token inside the environment variable `GITHUB_TOKEN`
-
 Make a request with an organization name:
 
 ```
