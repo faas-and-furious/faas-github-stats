@@ -1,16 +1,26 @@
 function fetchContributors(repos, fetchFactory) {
     return repos.map(repo => {
         return fetchFactory(repo).then(res => {
-            return {
-                repo: repo.name,
-                stars: repo.stargazers_count,
-                forks: repo.forks_count,
-                contributors: res.data.map(d => {
+            const status = res.meta.status;
+
+            let contributors = [];
+            if (/^202/.test(status)) {
+                throw new Error("The stats are currently being calculated. Please request again later.");
+            }
+            if (!/^204/.test(status)) {
+                // empty repos return 204 (no content) so need to checked
+                contributors = res.data.map(d => {
                     return {
                         login: d.author.login,
                         total: d.total,
                     };
                 })
+            }
+            return {
+                repo: repo.name,
+                stars: repo.stargazers_count,
+                forks: repo.forks_count,
+                contributors,
             };
         });
     })
