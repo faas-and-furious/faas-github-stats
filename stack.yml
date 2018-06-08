@@ -6,8 +6,9 @@ functions:
   github-stats:
     lang: node
     handler: ./github-stats
-    image: kenfdev/github-stats
+    image: kenfdev/github-stats:0.9.0
     environment:
       read_timeout: 30
-    environment_file:
-      - env.yml
+      API_KEY_NAME: kenfdev
+    secrets:
+      - github-api-keys
