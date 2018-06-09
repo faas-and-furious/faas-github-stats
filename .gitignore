@@ -1,3 +1,6 @@
 template/
 .vscode/
 build/
+
+template
+build

@@ -9,6 +9,15 @@ functions:
     image: kenfdev/github-stats:0.9.0
     environment:
       read_timeout: 30
+      write_timeout: 30
+      exec_timeout: 30
       API_KEY_NAME: kenfdev
     secrets:
       - github-api-keys
+  github-stats-page:
+    # lang: node
+    lang: node8-express
+    handler: ./github-stats-page
+    image: kenfdev/github-stats-page:0.9.0
+    environment:
+      write_debug: true
