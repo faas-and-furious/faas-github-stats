@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <v-app>
+    <v-app dark>
       <v-toolbar app>
-        <v-toolbar-title>OpenFaaS Contribution Stats</v-toolbar-title>
+        <v-toolbar-title>OpenFaaS GitHub Stats</v-toolbar-title>
       </v-toolbar>
       <v-content>
-        <router-view/>
+        <v-layout row wrap>
+          <v-flex offset-xs2 xs8>
+            <router-view/>
+          </v-flex>
+        </v-layout>
       </v-content>
     </v-app>
   </div>
@@ -24,6 +28,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
