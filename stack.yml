@@ -18,5 +18,3 @@ functions:
     lang: node8-express
     handler: ./github-stats-page
     image: kenfdev/github-stats-page:0.9.0
-    environment:
-      write_debug: true
