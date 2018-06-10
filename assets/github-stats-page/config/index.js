@@ -50,7 +50,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'https://rawgit.com/kenfdev/faas-github-stats/master/github-stats-page/dist/',
+    assetsPublicPath: 'https://rawgit.com/kenfdev/faas-github-stats/master/assets/github-stats-page/dist/',
 
     /**
      * Source Maps
