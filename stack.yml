@@ -15,6 +15,8 @@ functions:
     secrets:
       - github-api-keys
   github-stats-page:
-    lang: node8-express
+    lang: node
     handler: ./github-stats-page
     image: kenfdev/github-stats-page:0.9.0
+    environment:
+      content_type: text/html
