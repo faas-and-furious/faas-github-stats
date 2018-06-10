@@ -1,6 +1,6 @@
-template/
+template/*
+!template/node8-express
 .vscode/
 build/
 
-template
 build
