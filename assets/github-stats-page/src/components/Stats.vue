@@ -200,12 +200,20 @@ export default {
   },
   watch: {
     '$route.query.org'() {
-      this.org = this.$route.query.org;
+      if (!this.$route.query.org) {
+        this.org = 'openfaas';
+      } else {
+        this.org = this.$route.query.org;
+      }
       this.fetch();
     }
   },
   created() {
-    this.org = this.$route.query.org;
+    if (!this.$route.query.org) {
+      this.org = 'openfaas';
+    } else {
+      this.org = this.$route.query.org;
+    }
     this.loading = true;
     this.loadStats().finally(() => {
       this.loading = false;
