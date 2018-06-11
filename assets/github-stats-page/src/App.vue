@@ -2,7 +2,7 @@
   <div id="app">
     <v-app dark>
       <v-toolbar app>
-        <v-toolbar-title>OpenFaaS GitHub Stats</v-toolbar-title>
+        <v-toolbar-title>{{ $route.query.org.toUpperCase() }} GITHUB STATS</v-toolbar-title>
       </v-toolbar>
       <v-content>
         <v-layout row wrap>
@@ -17,7 +17,16 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    org: () => {
+      if (this.$route.query.org) {
+        return this.$route.query.org;
+      } else {
+        return '';
+      }
+    }
+  }
 };
 </script>
 

@@ -121,6 +121,7 @@ export default {
   },
   data() {
     return {
+      org: '',
       loading: true,
       headers: [
         { text: 'No', value: 'no', align: 'center', sortable: false },
@@ -156,7 +157,7 @@ export default {
     loadStats() {
       return axios
         .post('/github-stats', {
-          org: 'openfaas'
+          org: this.org
         })
         .then(res => {
           const json = res.data;
@@ -197,7 +198,14 @@ export default {
         });
     }
   },
+  watch: {
+    '$route.query.org'() {
+      this.org = this.$route.query.org;
+      this.fetch();
+    }
+  },
   created() {
+    this.org = this.$route.query.org;
     this.loading = true;
     this.loadStats().finally(() => {
       this.loading = false;
