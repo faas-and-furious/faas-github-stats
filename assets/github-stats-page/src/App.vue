@@ -2,7 +2,7 @@
   <div id="app">
     <v-app dark>
       <v-toolbar app>
-        <v-toolbar-title>{{ $route.query.org.toUpperCase() }} GITHUB STATS</v-toolbar-title>
+        <v-toolbar-title>{{ org.toUpperCase() }} GITHUB STATS</v-toolbar-title>
       </v-toolbar>
       <v-content>
         <v-layout row wrap>
@@ -18,13 +18,25 @@
 <script>
 export default {
   name: 'App',
-  computed: {
-    org: () => {
+  data() {
+    const org = this.getOrg();
+
+    return {
+      org
+    };
+  },
+  watch: {
+    '$route.query.org'() {
+      this.org = this.getOrg();
+    }
+  },
+  methods: {
+    getOrg() {
+      let org = 'openfaas';
       if (this.$route.query.org) {
-        return this.$route.query.org;
-      } else {
-        return '';
+        org = this.$route.query.org;
       }
+      return org;
     }
   }
 };
