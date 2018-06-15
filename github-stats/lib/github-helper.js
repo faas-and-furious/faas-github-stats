@@ -14,6 +14,12 @@ class GithubHelper {
 
   async paginate(method, options) {
     let response = await method(options);
+    if (/^202/.test(response.meta.status)) {
+      throw new Error(
+        'The stats are currently being calculated. Please request again later.'
+      );
+    }
+
     let { data } = response;
     while (this.github.hasNextPage(response)) {
       if (/^202/.test(response.meta.status)) {
@@ -21,8 +27,10 @@ class GithubHelper {
           'The stats are currently being calculated. Please request again later.'
         );
       }
+
+      response = await this.github.getNextPage(response);
+
       if (!/^204/.test(response.meta.status)) {
-        response = await this.github.getNextPage(response);
         data = data.concat(response.data);
       }
     }
