@@ -24,3 +24,5 @@ functions:
     lang: node
     handler: ./contributors-page
     image: kenfdev/contributors-page
+    environment:
+      content_type: text/html
