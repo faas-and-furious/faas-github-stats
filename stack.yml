@@ -20,3 +20,9 @@ functions:
     image: kenfdev/github-stats-page:0.9.0
     environment:
       content_type: text/html
+  contributors-page:
+    lang: node
+    handler: ./contributors-page
+    image: kenfdev/contributors-page:0.9.0
+    environment:
+      content_type: text/html
