@@ -12,7 +12,6 @@ functions:
       write_timeout: 30
       exec_timeout: 30
       API_KEY_NAME: kenfdev
-      write_debug: true
     secrets:
       - github-api-keys
   github-stats-page:
