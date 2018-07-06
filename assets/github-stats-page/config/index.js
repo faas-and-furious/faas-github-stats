@@ -11,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/github-stats': 'http://125.6.67.193:31112/function'
+      '/github-stats': 'https://kenfdev.o6s.io'
     },
 
     // Various Dev Server settings
