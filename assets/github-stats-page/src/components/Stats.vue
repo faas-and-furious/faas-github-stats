@@ -38,7 +38,7 @@
           </v-toolbar>
         </v-flex>
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="contribs" class="elevation-1" :pagination.sync="pagination">
+          <v-data-table :headers="headers" :items="contribs" class="elevation-1" :pagination.sync="pagination" :custom-sort="customSort">
             <template slot="items" slot-scope="props">
               <td>{{ props.item.index + 1 }}</td>
               <td>
@@ -148,6 +148,9 @@ export default {
     };
   },
   methods: {
+    customSort(items, index, isDescending) {
+      return items;
+    },
     fetch() {
       this.loading = true;
       this.loadStats().finally(() => {
