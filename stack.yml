@@ -8,11 +8,8 @@ functions:
     handler: ./github-stats
     image: kenfdev/github-stats:0.9.0
     environment:
-<<<<<<< Updated upstream
       write_debug: true
-=======
       combine_output: false
->>>>>>> Stashed changes
       read_timeout: 30
       write_timeout: 30
       exec_timeout: 30
