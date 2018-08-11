@@ -6,7 +6,7 @@ functions:
   github-stats:
     lang: node
     handler: ./github-stats
-    image: kenfdev/github-stats:0.9.0
+    image: kenfdev/github-stats:0.9.1
     environment:
       write_debug: true
       combine_output: false
@@ -14,11 +14,13 @@ functions:
       write_timeout: 30
       exec_timeout: 30
       API_KEY_NAME: kenfdev
+      CACHE_INVALIDATE_SECONDS: 900
+      CACHE_FILE_PATH: /tmp/stats_cache.json
     secrets:
       - github-api-keys
   github-stats-page:
     lang: node
     handler: ./github-stats-page
-    image: kenfdev/github-stats-page:0.9.0
+    image: kenfdev/github-stats-page:0.9.1
     environment:
       content_type: text/html
