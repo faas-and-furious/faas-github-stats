@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app dark>
-      <v-toolbar app>
+      <v-toolbar app color="black">
         <v-toolbar-title>{{ org.toUpperCase() }} GITHUB STATS</v-toolbar-title>
       </v-toolbar>
       <v-content>
@@ -22,13 +22,13 @@ export default {
     const org = this.getOrg();
 
     return {
-      org
+      org,
     };
   },
   watch: {
     '$route.query.org'() {
       this.org = this.getOrg();
-    }
+    },
   },
   methods: {
     getOrg() {
@@ -37,8 +37,8 @@ export default {
         org = this.$route.query.org;
       }
       return org;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -48,6 +48,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
 </style>
