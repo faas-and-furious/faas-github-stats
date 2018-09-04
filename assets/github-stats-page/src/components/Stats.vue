@@ -8,7 +8,7 @@
               <v-flex xs12>
                 <h3 class="headline mb-0">Stars: {{ stats.total.stars }}</h3>
               </v-flex>
-              <PieChart :chart-data="stars" :options="options" :width="200" style="margin: auto;"></PieChart>
+              <PieChart class="stats-pie-chart" :chart-data="stars" :options="options" :width="200"></PieChart>
             </v-card-title>
           </v-card>
         </v-flex>
@@ -18,7 +18,7 @@
               <v-flex xs12>
                 <h3 class="headline mb-0">Commits: {{ stats.total.commits }}</h3>
               </v-flex>
-              <PieChart :chart-data="commits" :options="options" :width="200" style="margin: auto;"></PieChart>
+              <PieChart class="stats-pie-chart" :chart-data="commits" :options="options" :width="200"></PieChart>
             </v-card-title>
           </v-card>
         </v-flex>
@@ -28,12 +28,12 @@
               <v-flex xs12>
                 <h3 class="headline mb-0">Forks: {{ stats.total.forks }}</h3>
               </v-flex>
-              <PieChart :chart-data="forks" :options="options" :width="200" style="margin: auto;"></PieChart>
+              <PieChart class="stats-pie-chart" :chart-data="forks" :options="options" :width="200"></PieChart>
             </v-card-title>
           </v-card>
         </v-flex>
         <v-flex xs12>
-          <v-toolbar>
+          <v-toolbar class="elevation-1">
             <v-toolbar-title>Contributors: {{ stats.uniqueAuthors }}</v-toolbar-title>
           </v-toolbar>
         </v-flex>
@@ -46,7 +46,9 @@
                   <img :src="'https://github.com/' + props.item.key + '.png'">
                 </v-avatar>
               </td>
-              <td>{{ props.item.key }}</td>
+              <td>
+                <a class="white--text lighten-5" :href="`https://github.com/${props.item.key}`" target="_blank">{{ props.item.key }}</a>
+              </td>
               <td class="text-xs-right">{{ props.item.value }}</td>
             </template>
           </v-data-table>
@@ -56,7 +58,7 @@
         <v-container>
           <v-flex xs12>
             <p class="grey--text">
-              No stats fetched? Try loading it again.
+              {{ message }}
             </p>
           </v-flex>
           <v-flex xs12>
@@ -98,41 +100,32 @@ function generateChartData(data, valueKey) {
     datasets: [
       {
         data: values,
-        backgroundColor: [
-          '#5DA5DA',
-          '#FAA43A',
-          '#60BD68',
-          '#F17CB0',
-          '#B2912F',
-          '#B276B2',
-          '#DECF3F',
-          '#F15854',
-          '#4D4D4D'
-        ]
-      }
-    ]
+        backgroundColor: ['#5DA5DA', '#FAA43A', '#60BD68', '#F17CB0', '#B2912F', '#B276B2', '#DECF3F', '#F15854', '#4D4D4D'],
+      },
+    ],
   };
 }
 
 export default {
   name: 'Stats',
   components: {
-    PieChart
+    PieChart,
   },
   data() {
     return {
+      message: 'No stats fetched? Try loading it again.',
       org: '',
       loading: true,
       headers: [
         { text: 'No', value: 'no', align: 'center', sortable: false },
         { text: 'Avatar', value: 'avatar', align: 'center', sortable: false },
         { text: 'Name', value: 'key', align: 'center' },
-        { text: 'Commits', value: 'value', align: 'center' }
+        { text: 'Commits', value: 'value', align: 'center' },
       ],
       pagination: {
         sortBy: 'value',
         descending: true,
-        rowsPerPage: 10
+        rowsPerPage: 10,
       },
       stats: {},
       stars: {},
@@ -140,11 +133,11 @@ export default {
       forks: {},
       options: {
         legend: {
-          display: false
+          display: false,
         },
-        responsive: true
+        responsive: true,
       },
-      contribs: []
+      contribs: [],
     };
   },
   methods: {
@@ -152,15 +145,34 @@ export default {
       return items;
     },
     fetch() {
+      console.debug('fetching data');
+      this.message = '';
       this.loading = true;
-      this.loadStats().finally(() => {
-        this.loading = false;
+      this.loadStats()
+        .catch(err => {
+          console.log(err);
+          return this.waitFor(5)
+            .then(() => this.loadStats())
+            .catch(err => {
+              console.log(err);
+              this.message = 'The stats are being calculated. Please try again later.';
+            });
+        })
+        .finally(() => {
+          console.debug('fetching done');
+          this.loading = false;
+        });
+    },
+    waitFor(seconds) {
+      return new Promise(resolve => {
+        console.log(`stats returned an error. retrying in ${seconds} seconds`);
+        setTimeout(() => resolve(), seconds * 1000);
       });
     },
     loadStats() {
       return axios
         .post('/github-stats', {
-          org: this.org
+          org: this.org,
         })
         .then(res => {
           const json = res.data;
@@ -195,11 +207,11 @@ export default {
               return {
                 key: v.key,
                 value: v.value,
-                index
+                index,
               };
             });
         });
-    }
+    },
   },
   watch: {
     '$route.query.org'() {
@@ -209,7 +221,7 @@ export default {
         this.org = this.$route.query.org;
       }
       this.fetch();
-    }
+    },
   },
   created() {
     if (!this.$route.query.org) {
@@ -217,11 +229,8 @@ export default {
     } else {
       this.org = this.$route.query.org;
     }
-    this.loading = true;
-    this.loadStats().finally(() => {
-      this.loading = false;
-    });
-  }
+    this.fetch();
+  },
 };
 </script>
 
@@ -241,5 +250,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.stats-pie-chart {
+  margin: -85px auto;
 }
 </style>
