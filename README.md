@@ -7,3 +7,4 @@ Make a request with an organization name:
 ```
 
 And you can get an overall stats of the repo.
+
